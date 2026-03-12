@@ -27,7 +27,7 @@ export const MeetKiput = () => {
         >
           <div className="relative h-64 md:h-96 rounded-[1.5rem] overflow-hidden mb-6">
             <img 
-              src="https://images.unsplash.com/photo-1768701162087-85ee9dcda8b1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxpbmRpZ2Vub3VzJTIwcGVvcGxlJTIwYm9ybmVvfGVufDF8fHx8MTc3MzI4MjA4MHww&ixlib=rb-4.1.0&q=80&w=1080"
+              src="/pictures/kiput.webp"
               alt="Kiput People"
               className="w-full h-full object-cover"
             />
