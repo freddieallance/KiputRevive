@@ -1,18 +1,3 @@
-// ==========================================
-// AUDIO PLACEMENT GUIDE:
-// ==========================================
-// 1. Vocabulary Audio:
-//    - Create a folder: `public/audio/`
-//    - Put your girlfriend's recorded MP3s inside it.
-//    - Ensure the filenames match the `audio` field below (e.g. `tamah.mp3`, `sik.mp3`).
-// 
-// 2. Story Audio (Book Mode):
-//    - Create a folder: `public/audio/stories/`
-//    - The story is now divided into PAGES. You need an MP3 for each page!
-//    - Save the recordings as: `santubong_page1.mp3`, `santubong_page2.mp3`, etc.
-//    - Put them all inside `public/audio/stories/`
-// ==========================================
-
 export interface Word {
   id: string;
   kiput: string;
