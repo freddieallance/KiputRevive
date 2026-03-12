@@ -125,6 +125,10 @@ const SentenceGenerator = ({ onExit }: { onExit: () => void }) => {
   const [object, setObject] = useState(objectsByVerb[verbs[0].kiput][0]);
   const [isPlaying, setIsPlaying] = useState(false);
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   // When verb changes, ensure the object makes sense for that verb
   useEffect(() => {
     const validObjects = objectsByVerb[verb.kiput];
@@ -270,6 +274,10 @@ const getCategory = (title: string) => {
 // --- Sub-Screens ---
 
 const UnitPath = ({ onSelectUnit, onOpenGenerator }: { onSelectUnit: (u: Unit) => void, onOpenGenerator: () => void }) => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   // Group units by category
   const groupedUnits = kiputUnits.reduce((acc, unit) => {
     const cat = getCategory(unit.title);
@@ -360,6 +368,14 @@ const LessonSession = ({ unit, onExit }: { unit: Unit, onExit: () => void }) => 
   }));
 
   const currentQuestion = questions[currentQuestionIndex];
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    window.dispatchEvent(new CustomEvent('setChatbotVisibility', { detail: false }));
+    return () => {
+      window.dispatchEvent(new CustomEvent('setChatbotVisibility', { detail: true }));
+    };
+  }, []);
 
   const playAudio = (path: string) => {
     // This is where the magic happens for user audio
@@ -485,7 +501,7 @@ const LessonSession = ({ unit, onExit }: { unit: Unit, onExit: () => void }) => 
 
       {/* Footer / Feedback Area */}
       <div className={`
-        fixed bottom-0 left-0 right-0 p-4 md:p-8 border-t-2 
+        fixed bottom-16 md:bottom-0 left-0 right-0 p-4 md:p-8 border-t-2 
         ${status === "idle" ? "bg-white border-stone-200" : ""}
         ${status === "correct" ? "bg-emerald-100 border-emerald-200" : ""}
         ${status === "wrong" ? "bg-rose-100 border-rose-200" : ""}

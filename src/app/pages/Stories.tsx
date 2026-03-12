@@ -89,6 +89,10 @@ const BookReader = ({ story, onClose }: { story: Story, onClose: () => void }) =
   const [slideDirection, setSlideDirection] = useState<"left" | "right">("right");
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const page = story.pages[currentPageIndex];
 
   // Split text into sentences for highlighting
@@ -222,7 +226,7 @@ const BookReader = ({ story, onClose }: { story: Story, onClose: () => void }) =
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 0.9 }}
-      className="fixed inset-0 z-50 bg-stone-900/80 backdrop-blur-sm flex flex-col items-center justify-center p-4 sm:p-8"
+      className="fixed inset-0 z-[60] bg-stone-900/80 backdrop-blur-sm flex flex-col items-center justify-center p-4 sm:p-8"
     >
       {/* Top Bar */}
       <div className="absolute top-4 sm:top-8 left-0 right-0 px-4 sm:px-8 flex justify-between items-center z-10 w-full max-w-7xl mx-auto">
@@ -266,9 +270,9 @@ const BookReader = ({ story, onClose }: { story: Story, onClose: () => void }) =
             </div>
 
             {/* Right Page: Text & Audio Controls */}
-            <div className="h-1/2 sm:h-full sm:w-1/2 bg-[#fdfbf7] p-6 sm:p-12 sm:pl-10 flex flex-col relative">
+            <div className="h-1/2 sm:h-full sm:w-1/2 bg-[#fdfbf7] p-4 sm:p-12 sm:pl-10 flex flex-col relative">
               <div className="flex-1 flex items-center justify-center overflow-y-auto min-h-0">
-                <div className={`font-serif text-stone-800 leading-snug sm:leading-relaxed text-center whitespace-pre-wrap py-4 ${page.text.length > 150 ? 'text-2xl sm:text-3xl lg:text-4xl' : 'text-3xl sm:text-4xl lg:text-5xl'}`}>
+                <div className={`font-serif text-stone-800 leading-snug sm:leading-relaxed text-center whitespace-pre-wrap py-2 sm:py-4 ${page.text.length > 150 ? 'text-base sm:text-2xl lg:text-3xl' : 'text-lg sm:text-3xl lg:text-4xl'}`}>
                   {sentences.map((sentence, idx) => (
                     <span 
                       key={idx} 
@@ -281,10 +285,10 @@ const BookReader = ({ story, onClose }: { story: Story, onClose: () => void }) =
               </div>
 
               {/* Audio Controls */}
-              <div className="mt-6 flex flex-col items-center gap-4 shrink-0">
+              <div className="mt-3 sm:mt-6 flex flex-col items-center gap-2 sm:gap-4 shrink-0">
                 {/* Progress Bar */}
                 {duration > 0 && (
-                  <div className="w-full max-w-md h-2 bg-stone-200 rounded-full overflow-hidden">
+                  <div className="w-full max-w-md h-1.5 sm:h-2 bg-stone-200 rounded-full overflow-hidden">
                     <div 
                       className="h-full bg-emerald-400 transition-all duration-100 ease-linear"
                       style={{ width: `${(currentTime / duration) * 100}%` }}
@@ -292,13 +296,13 @@ const BookReader = ({ story, onClose }: { story: Story, onClose: () => void }) =
                   </div>
                 )}
 
-                <div className="flex items-center gap-4 relative">
+                <div className="flex items-center gap-2 sm:gap-4 relative">
                   <button 
                     onClick={togglePlay}
-                    className={`flex items-center gap-3 px-8 py-4 rounded-full text-2xl font-bold transition-all shadow-[0_6px_0_0_rgba(0,0,0,0.1)] active:translate-y-[6px] active:shadow-none
-                      ${isPlaying ? 'bg-amber-400 text-amber-900 shadow-[0_6px_0_0_#b45309]' : 'bg-emerald-400 text-emerald-900 shadow-[0_6px_0_0_#047857] hover:bg-emerald-300'}`}
+                    className={`flex items-center gap-2 sm:gap-3 px-6 py-2 sm:px-8 sm:py-4 rounded-full text-base sm:text-2xl font-bold transition-all shadow-[0_4px_0_0_rgba(0,0,0,0.1)] sm:shadow-[0_6px_0_0_rgba(0,0,0,0.1)] active:translate-y-[4px] sm:active:translate-y-[6px] active:shadow-none
+                      ${isPlaying ? 'bg-amber-400 text-amber-900 shadow-[0_4px_0_0_#b45309] sm:shadow-[0_6px_0_0_#b45309]' : 'bg-emerald-400 text-emerald-900 shadow-[0_4px_0_0_#047857] sm:shadow-[0_6px_0_0_#047857] hover:bg-emerald-300'}`}
                   >
-                    {isPlaying ? <Pause fill="currentColor" size={32} /> : <Volume2 size={32} />}
+                    {isPlaying ? <Pause fill="currentColor" size={20} className="sm:w-8 sm:h-8" /> : <Volume2 size={20} className="sm:w-8 sm:h-8" />}
                     {isPlaying ? "Playing..." : "Read to me"}
                   </button>
 
@@ -306,10 +310,10 @@ const BookReader = ({ story, onClose }: { story: Story, onClose: () => void }) =
                   <div className="relative">
                     <button
                       onClick={() => setShowSpeedMenu(!showSpeedMenu)}
-                      className="p-4 rounded-full bg-stone-100 text-stone-600 hover:bg-stone-200 transition-colors shadow-sm"
+                      className="p-2 sm:p-4 rounded-full bg-stone-100 text-stone-600 hover:bg-stone-200 transition-colors shadow-sm"
                       title="Playback Speed"
                     >
-                      <Settings2 size={24} />
+                      <Settings2 size={20} className="sm:w-6 sm:h-6" />
                     </button>
                     
                     <AnimatePresence>

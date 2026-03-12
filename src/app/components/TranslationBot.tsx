@@ -11,6 +11,7 @@ interface Message {
 
 export const TranslationBot = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
   const [messages, setMessages] = useState<Message[]>([
     { id: '1', text: "Hello! I am your KiputRevive AI guide. Ask me to translate a basic word!", sender: 'bot' }
   ]);
@@ -24,6 +25,18 @@ export const TranslationBot = () => {
   useEffect(() => {
     scrollToBottom();
   }, [messages, isOpen]);
+
+  useEffect(() => {
+    const handleVisibility = (e: Event) => {
+      const customEvent = e as CustomEvent<boolean>;
+      setIsVisible(customEvent.detail);
+      if (!customEvent.detail) {
+        setIsOpen(false);
+      }
+    };
+    window.addEventListener('setChatbotVisibility', handleVisibility);
+    return () => window.removeEventListener('setChatbotVisibility', handleVisibility);
+  }, []);
 
   const handleSend = () => {
     if (!input.trim()) return;
@@ -60,12 +73,14 @@ export const TranslationBot = () => {
     return "I'm still learning! I only know basic words from your vocabulary list right now. Try asking for 'Dog', 'Mother', or 'River'.";
   };
 
+  if (!isVisible) return null;
+
   return (
     <>
       {/* Floating Button */}
       <motion.button
         onClick={() => setIsOpen(true)}
-        className={`fixed bottom-6 right-6 z-50 p-4 rounded-full bg-emerald-600 text-white shadow-xl hover:bg-emerald-700 transition-colors ${isOpen ? 'hidden' : 'block'}`}
+        className={`fixed bottom-20 md:bottom-6 right-4 md:right-6 z-50 p-4 rounded-full bg-emerald-600 text-white shadow-xl hover:bg-emerald-700 transition-colors ${isOpen ? 'hidden' : 'block'}`}
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
       >
@@ -79,8 +94,8 @@ export const TranslationBot = () => {
             initial={{ opacity: 0, y: 50, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 50, scale: 0.9 }}
-            className="fixed bottom-6 right-6 z-50 w-80 sm:w-96 bg-white rounded-3xl shadow-2xl border border-stone-200 overflow-hidden flex flex-col"
-            style={{ height: '500px', maxHeight: '80vh' }}
+            className="fixed bottom-20 md:bottom-6 right-4 md:right-6 z-50 w-[calc(100vw-2rem)] sm:w-96 bg-white rounded-3xl shadow-2xl border border-stone-200 overflow-hidden flex flex-col"
+            style={{ height: '500px', maxHeight: 'calc(100vh - 6rem)' }}
           >
             {/* Header */}
             <div className="bg-emerald-600 p-4 flex items-center justify-between text-white">

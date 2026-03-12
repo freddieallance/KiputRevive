@@ -1,16 +1,24 @@
 import { Link, Outlet, useLocation } from "react-router";
-import { Menu, X, BookOpen, Feather, Languages, MessageSquarePlus, Home } from "lucide-react";
-import { useState } from "react";
-import { motion, AnimatePresence } from "motion/react";
+import { BookOpen, Feather, Languages, MessageSquarePlus, Home } from "lucide-react";
 import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { useEffect } from "react";
 
 function cn(...inputs: (string | undefined | null | false)[]) {
   return twMerge(clsx(inputs));
 }
 
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+};
+
 const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
 
   const links = [
@@ -22,60 +30,18 @@ const Navbar = () => {
   ];
 
   return (
-    <nav className="sticky top-0 z-50 bg-stone-900/95 backdrop-blur-sm border-b border-stone-800 text-stone-100">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          <Link to="/" className="flex items-center gap-2 font-bold text-xl tracking-wide text-emerald-400">
-            <Feather className="h-6 w-6" />
-            <span>KIPUT<span className="text-stone-100">REVIVE</span></span>
-            <span className="bg-emerald-900/50 text-emerald-400 text-[10px] px-2 py-0.5 rounded border border-emerald-800 ml-1 uppercase tracking-wider">Beta</span>
-          </Link>
+    <>
+      {/* Top Navbar (Desktop only) */}
+      <nav className="hidden md:block sticky top-0 z-50 bg-stone-900/95 backdrop-blur-sm border-b border-stone-800 text-stone-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16">
+            <Link to="/" className="flex items-center gap-2 font-bold text-xl tracking-wide text-emerald-400">
+              <Feather className="h-6 w-6" />
+              <span>KIPUT<span className="text-stone-100">REVIVE</span></span>
+              <span className="bg-emerald-900/50 text-emerald-400 text-[10px] px-2 py-0.5 rounded border border-emerald-800 ml-1 uppercase tracking-wider">Beta</span>
+            </Link>
 
-          {/* Desktop Menu */}
-          <div className="hidden md:flex items-center space-x-1">
-            {links.map((link) => {
-              const isActive = location.pathname === link.path;
-              const Icon = link.icon;
-              return (
-                <Link
-                  key={link.name}
-                  to={link.path}
-                  className={cn(
-                    "px-4 py-2 rounded-md text-sm font-medium transition-colors flex items-center gap-2",
-                    isActive
-                      ? "bg-stone-800 text-emerald-400"
-                      : "text-stone-300 hover:bg-stone-800 hover:text-white"
-                  )}
-                >
-                  <Icon className="h-4 w-4" />
-                  {link.name}
-                </Link>
-              );
-            })}
-          </div>
-
-          {/* Mobile Menu Button */}
-          <div className="md:hidden">
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="p-2 rounded-md text-stone-400 hover:text-white hover:bg-stone-800 focus:outline-none"
-            >
-              {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* Mobile Menu */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-stone-900 border-b border-stone-800"
-          >
-            <div className="px-2 pt-2 pb-3 space-y-1">
+            <div className="flex items-center space-x-1">
               {links.map((link) => {
                 const isActive = location.pathname === link.path;
                 const Icon = link.icon;
@@ -83,24 +49,54 @@ const Navbar = () => {
                   <Link
                     key={link.name}
                     to={link.path}
-                    onClick={() => setIsOpen(false)}
                     className={cn(
-                      "block px-3 py-2 rounded-md text-base font-medium flex items-center gap-3",
+                      "px-4 py-2 rounded-md text-sm font-medium transition-colors flex items-center gap-2",
                       isActive
                         ? "bg-stone-800 text-emerald-400"
                         : "text-stone-300 hover:bg-stone-800 hover:text-white"
                     )}
                   >
-                    <Icon className="h-5 w-5" />
+                    <Icon className="h-4 w-4" />
                     {link.name}
                   </Link>
                 );
               })}
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </nav>
+          </div>
+        </div>
+      </nav>
+
+      {/* Mobile Top Header (Logo only) */}
+      <div className="md:hidden sticky top-0 z-50 bg-stone-900/95 backdrop-blur-sm border-b border-stone-800 text-stone-100 h-14 flex items-center justify-center">
+        <Link to="/" className="flex items-center gap-2 font-bold text-lg tracking-wide text-emerald-400">
+          <Feather className="h-5 w-5" />
+          <span>KIPUT<span className="text-stone-100">REVIVE</span></span>
+        </Link>
+      </div>
+
+      {/* Bottom Navigation (Mobile only) */}
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-stone-900/95 backdrop-blur-md border-t border-stone-800 pb-safe">
+        <div className="flex items-center justify-around h-16 px-2">
+          {links.map((link) => {
+            const isActive = location.pathname === link.path;
+            const Icon = link.icon;
+            return (
+              <Link
+                key={link.name}
+                to={link.path}
+                className={cn(
+                  "flex flex-col items-center justify-center w-full h-full space-y-1 transition-colors",
+                  isActive ? "text-emerald-400" : "text-stone-400 hover:text-stone-200"
+                )}
+              >
+                <Icon className={cn("h-5 w-5", isActive && "fill-emerald-400/20")} />
+                <span className="text-[10px] font-medium">{link.name}</span>
+              </Link>
+            );
+          })}
+        </div>
+      </nav>
+    </>
   );
 };
 
@@ -125,7 +121,8 @@ const Footer = () => (
 
 export const Layout = () => {
   return (
-    <div className="min-h-screen bg-stone-50 flex flex-col font-sans text-stone-900">
+    <div className="min-h-screen bg-stone-50 flex flex-col font-sans text-stone-900 pb-16 md:pb-0">
+      <ScrollToTop />
       <Navbar />
       <main className="flex-grow">
         <Outlet />
