@@ -266,9 +266,9 @@ const BookReader = ({ story, onClose }: { story: Story, onClose: () => void }) =
             </div>
 
             {/* Right Page: Text & Audio Controls */}
-            <div className="h-1/2 sm:h-full sm:w-1/2 bg-[#fdfbf7] p-8 sm:p-16 sm:pl-12 flex flex-col relative">
-              <div className="flex-1 flex items-center justify-center">
-                <div className="text-3xl sm:text-5xl font-serif text-stone-800 leading-snug sm:leading-relaxed text-center whitespace-pre-wrap">
+            <div className="h-1/2 sm:h-full sm:w-1/2 bg-[#fdfbf7] p-6 sm:p-12 sm:pl-10 flex flex-col relative">
+              <div className="flex-1 flex items-center justify-center overflow-y-auto min-h-0">
+                <div className={`font-serif text-stone-800 leading-snug sm:leading-relaxed text-center whitespace-pre-wrap py-4 ${page.text.length > 150 ? 'text-2xl sm:text-3xl lg:text-4xl' : 'text-3xl sm:text-4xl lg:text-5xl'}`}>
                   {sentences.map((sentence, idx) => (
                     <span 
                       key={idx} 
@@ -281,7 +281,7 @@ const BookReader = ({ story, onClose }: { story: Story, onClose: () => void }) =
               </div>
 
               {/* Audio Controls */}
-              <div className="mt-8 flex flex-col items-center gap-4">
+              <div className="mt-6 flex flex-col items-center gap-4 shrink-0">
                 {/* Progress Bar */}
                 {duration > 0 && (
                   <div className="w-full max-w-md h-2 bg-stone-200 rounded-full overflow-hidden">
