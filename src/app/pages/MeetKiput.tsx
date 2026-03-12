@@ -57,7 +57,7 @@ export const MeetKiput = () => {
             <h3 className="text-2xl font-black text-sky-800 mb-4">Where They Live</h3>
             <div className="relative w-full h-48 rounded-[1.5rem] overflow-hidden mb-4 border-2 border-sky-300">
               <img 
-                src="https://images.unsplash.com/photo-1701289870791-594cf2ce0448?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxyaXZlciUyMGp1bmdsZSUyMGJvcm5lb3xlbnwxfHx8fDE3NzMyODIwODB8MA&ixlib=rb-4.1.0&q=80&w=1080"
+                src="/pictures/baram.png"
                 alt="Baram River Map"
                 className="w-full h-full object-cover"
               />
