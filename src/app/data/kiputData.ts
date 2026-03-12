@@ -382,7 +382,7 @@ export const kiputStories: Story[] = [
         id: "s0_p1",
         text: "Origin: The Kiput people live on the banks of the Baram River. They are great warriors and farmers. The name “Kiput” is said to come from the name of a small river in their original area.",
         audio: "/audio/stories/kiput_page1.mp3",
-        image: "https://images.unsplash.com/photo-1691098343433-05584b38e1bc?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxyaXZlciUyMGp1bmdsZXxlbnwxfHx8fDE3NzMyODIwODl8MA&ixlib=rb-4.1.0&q=80&w=1080"
+        image: "/pictures/baram2.jpg"
       },
       {
         id: "s0_p2",
