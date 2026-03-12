@@ -1,5 +1,5 @@
-import { useState, useRef, useEffect, useMemo } from "react";
-import { Play, Pause, X, ChevronLeft, ChevronRight, BookOpen, Volume2, Sparkles, Settings2 } from "lucide-react";
+import { useState, useRef, useEffect } from "react";
+import { Play, Pause, X, ChevronLeft, ChevronRight, BookOpen, Volume2, Sparkles } from "lucide-react";
 import { Link } from "react-router";
 import { motion, AnimatePresence } from "motion/react";
 import { kiputStories, Story } from "../data/kiputData";
@@ -82,71 +82,24 @@ export const Stories = () => {
 const BookReader = ({ story, onClose }: { story: Story, onClose: () => void }) => {
   const [currentPageIndex, setCurrentPageIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [playbackRate, setPlaybackRate] = useState(1);
-  const [showSpeedMenu, setShowSpeedMenu] = useState(false);
-  const [currentTime, setCurrentTime] = useState(0);
-  const [duration, setDuration] = useState(0);
   const [slideDirection, setSlideDirection] = useState<"left" | "right">("right");
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const page = story.pages[currentPageIndex];
-
-  // Split text into sentences for highlighting
-  const sentences = useMemo(() => {
-    // Basic sentence splitting by punctuation
-    return page.text.match(/[^.!?]+[.!?]+|\s*[^.!?]+$/g)?.map(s => s.trim()).filter(Boolean) || [page.text];
-  }, [page.text]);
-
-  // Calculate which sentence is currently playing based on character proportion
-  const currentSentenceIndex = useMemo(() => {
-    if (!duration || duration === 0 || sentences.length === 0) return -1;
-    if (!isPlaying && currentTime === 0) return -1;
-
-    const totalChars = sentences.reduce((acc, s) => acc + s.length, 0);
-    const progress = currentTime / duration;
-    const targetChars = progress * totalChars;
-
-    let charCount = 0;
-    for (let i = 0; i < sentences.length; i++) {
-      charCount += sentences[i].length;
-      if (charCount >= targetChars) {
-        return i;
-      }
-    }
-    return sentences.length - 1;
-  }, [currentTime, duration, sentences, isPlaying]);
 
   // Play audio when page turns
   useEffect(() => {
     // Stop any currently playing audio
     if (audioRef.current) {
       audioRef.current.pause();
-      audioRef.current.currentTime = 0;
       audioRef.current = null;
     }
-
-    setCurrentTime(0);
-    setDuration(0);
-    setIsPlaying(false);
 
     if (page && page.audio) {
       const audio = new Audio(page.audio);
       audioRef.current = audio;
-      audio.playbackRate = playbackRate;
       
-      audio.onloadedmetadata = () => {
-        setDuration(audio.duration);
-      };
-
-      audio.ontimeupdate = () => {
-        setCurrentTime(audio.currentTime);
-      };
-
-      audio.onended = () => {
-        setIsPlaying(false);
-        setCurrentTime(audio.duration || 0);
-      };
-      
+      audio.onended = () => setIsPlaying(false);
       audio.onerror = () => {
         // Silently ignore if MP3 isn't created yet so kids aren't interrupted
         setIsPlaying(false);
@@ -163,28 +116,9 @@ const BookReader = ({ story, onClose }: { story: Story, onClose: () => void }) =
     return () => {
       if (audioRef.current) {
         audioRef.current.pause();
-        audioRef.current.src = "";
       }
     };
-  }, [currentPageIndex, page]); // Intentionally omitting playbackRate so it doesn't restart audio on speed change
-
-  // Update playback rate when it changes
-  useEffect(() => {
-    if (audioRef.current) {
-      audioRef.current.playbackRate = playbackRate;
-    }
-  }, [playbackRate]);
-
-  // Ensure audio stops when unmounting the BookReader entirely
-  useEffect(() => {
-    return () => {
-      if (audioRef.current) {
-        audioRef.current.pause();
-        audioRef.current.src = "";
-        audioRef.current = null;
-      }
-    };
-  }, []);
+  }, [currentPageIndex, page]);
 
   const togglePlay = () => {
     if (!audioRef.current) return;
@@ -193,9 +127,6 @@ const BookReader = ({ story, onClose }: { story: Story, onClose: () => void }) =
       audioRef.current.pause();
       setIsPlaying(false);
     } else {
-      if (currentTime >= duration && duration > 0) {
-        audioRef.current.currentTime = 0;
-      }
       audioRef.current.play().catch(() => {});
       setIsPlaying(true);
     }
@@ -214,8 +145,6 @@ const BookReader = ({ story, onClose }: { story: Story, onClose: () => void }) =
       setCurrentPageIndex(prev => prev - 1);
     }
   };
-
-  const speedOptions = [0.5, 0.75, 1, 1.25, 1.5];
 
   return (
     <motion.div
@@ -268,78 +197,21 @@ const BookReader = ({ story, onClose }: { story: Story, onClose: () => void }) =
             {/* Right Page: Text & Audio Controls */}
             <div className="h-1/2 sm:h-full sm:w-1/2 bg-[#fdfbf7] p-8 sm:p-16 sm:pl-12 flex flex-col relative">
               <div className="flex-1 flex items-center justify-center">
-                <div className="text-3xl sm:text-5xl font-serif text-stone-800 leading-snug sm:leading-relaxed text-center whitespace-pre-wrap">
-                  {sentences.map((sentence, idx) => (
-                    <span 
-                      key={idx} 
-                      className={`transition-colors duration-300 ${idx === currentSentenceIndex ? 'bg-amber-200 text-amber-900 rounded-md px-1' : ''}`}
-                    >
-                      {sentence}{" "}
-                    </span>
-                  ))}
-                </div>
+                <p className="text-3xl sm:text-5xl font-serif text-stone-800 leading-snug sm:leading-relaxed text-center whitespace-pre-wrap">
+                  {page.text}
+                </p>
               </div>
 
-              {/* Audio Controls */}
-              <div className="mt-8 flex flex-col items-center gap-4">
-                {/* Progress Bar */}
-                {duration > 0 && (
-                  <div className="w-full max-w-md h-2 bg-stone-200 rounded-full overflow-hidden">
-                    <div 
-                      className="h-full bg-emerald-400 transition-all duration-100 ease-linear"
-                      style={{ width: `${(currentTime / duration) * 100}%` }}
-                    />
-                  </div>
-                )}
-
-                <div className="flex items-center gap-4 relative">
-                  <button 
-                    onClick={togglePlay}
-                    className={`flex items-center gap-3 px-8 py-4 rounded-full text-2xl font-bold transition-all shadow-[0_6px_0_0_rgba(0,0,0,0.1)] active:translate-y-[6px] active:shadow-none
-                      ${isPlaying ? 'bg-amber-400 text-amber-900 shadow-[0_6px_0_0_#b45309]' : 'bg-emerald-400 text-emerald-900 shadow-[0_6px_0_0_#047857] hover:bg-emerald-300'}`}
-                  >
-                    {isPlaying ? <Pause fill="currentColor" size={32} /> : <Volume2 size={32} />}
-                    {isPlaying ? "Playing..." : "Read to me"}
-                  </button>
-
-                  {/* Speed Control */}
-                  <div className="relative">
-                    <button
-                      onClick={() => setShowSpeedMenu(!showSpeedMenu)}
-                      className="p-4 rounded-full bg-stone-100 text-stone-600 hover:bg-stone-200 transition-colors shadow-sm"
-                      title="Playback Speed"
-                    >
-                      <Settings2 size={24} />
-                    </button>
-                    
-                    <AnimatePresence>
-                      {showSpeedMenu && (
-                        <motion.div
-                          initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                          animate={{ opacity: 1, y: 0, scale: 1 }}
-                          exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                          className="absolute bottom-full right-0 mb-2 bg-white rounded-xl shadow-xl border border-stone-100 overflow-hidden flex flex-col w-32 z-50"
-                        >
-                          <div className="px-3 py-2 bg-stone-50 border-b border-stone-100 text-xs font-bold text-stone-500 uppercase tracking-wider text-center">
-                            Speed
-                          </div>
-                          {speedOptions.map(speed => (
-                            <button
-                              key={speed}
-                              onClick={() => {
-                                setPlaybackRate(speed);
-                                setShowSpeedMenu(false);
-                              }}
-                              className={`px-4 py-2 text-sm font-medium transition-colors hover:bg-emerald-50 ${playbackRate === speed ? 'bg-emerald-100 text-emerald-700' : 'text-stone-700'}`}
-                            >
-                              {speed}x
-                            </button>
-                          ))}
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </div>
-                </div>
+              {/* Audio Play Button */}
+              <div className="mt-8 flex justify-center">
+                <button 
+                  onClick={togglePlay}
+                  className={`flex items-center gap-3 px-8 py-4 rounded-full text-2xl font-bold transition-all shadow-[0_6px_0_0_rgba(0,0,0,0.1)] active:translate-y-[6px] active:shadow-none
+                    ${isPlaying ? 'bg-amber-400 text-amber-900 shadow-[0_6px_0_0_#b45309]' : 'bg-emerald-400 text-emerald-900 shadow-[0_6px_0_0_#047857] hover:bg-emerald-300'}`}
+                >
+                  {isPlaying ? <Pause fill="currentColor" size={32} /> : <Volume2 size={32} />}
+                  {isPlaying ? "Playing..." : "Read to me"}
+                </button>
               </div>
             </div>
           </motion.div>
