@@ -409,55 +409,55 @@ export const kiputStories: Story[] = [
     title: "Princess Santubong & Princess Sejinjang",
     excerpt: "Long ago, there were two beautiful princesses: Princess Santubong and Princess Sejinjang.",
     duration: "8 pages",
-    coverImage: "https://images.unsplash.com/photo-1667562661336-c74208b145ab?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx0cmFkaXRpb25hbCUyMGFzaWFuJTIwcHJpbmNlc3MlMjB3ZWF2aW5nJTIwY2xvdGh8ZW58MXx8fHwxNzczMDI4NjQxfDA&ixlib=rb-4.1.0&q=80&w=1080",
+    coverImage: "/pictures/stories/psps1.png",
     pages: [
       {
         id: "p1",
         text: "Long ago, there were two beautiful princesses: Princess Santubong and Princess Sejinjang.",
         audio: "/audio/stories/santubong_page1.mp3",
-        image: "https://images.unsplash.com/photo-1667562661336-c74208b145ab?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx0cmFkaXRpb25hbCUyMGFzaWFuJTIwcHJpbmNlc3MlMjB3ZWF2aW5nJTIwY2xvdGh8ZW58MXx8fHwxNzczMDI4NjQxfDA&ixlib=rb-4.1.0&q=80&w=1080"
+        image: "/pictures/stories/psps1.png"
       },
       {
         id: "p2",
         text: "Santubong was skilled at weaving cloth, while Sejinjang was skilled at pounding rice.",
         audio: "/audio/stories/santubong_page2.mp3",
-        image: "https://images.unsplash.com/photo-1731159623305-b52c5abdd538?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx0cmFkaXRpb25hbCUyMGFzaWFuJTIwd29tYW4lMjBmYXJtaW5nJTIwcmljZSUyMGZpZWxkc3xlbnwxfHx8fDE3NzMwMjg2NDF8MA&ixlib=rb-4.1.0&q=80&w=1080"
+        image: "/pictures/stories/psps3.png"
       },
       {
         id: "p3",
         text: "Over time, they became arrogant. They argued about who was greater.",
         audio: "/audio/stories/santubong_page3.mp3",
-        image: "https://images.unsplash.com/photo-1542281286-9e0a16bb7366?auto=format&fit=crop&w=1080&q=80"
+        image: "/pictures/stories/psps4.png"
       },
       {
         id: "p4",
         text: "\"My cloth is more beautiful!\" said Santubong.\n\"My rice is more important!\" replied Sejinjang.",
         audio: "/audio/stories/santubong_page4.mp3",
-        image: "https://images.unsplash.com/photo-1599579086433-2868cb5a3cb5?auto=format&fit=crop&w=1080&q=80"
+        image: "/pictures/stories/psps4.png"
       },
       {
         id: "p5",
         text: "They became very angry. Sejinjang threw a pestle (a wooden tool used for pounding rice) at Santubong’s face.",
         audio: "/audio/stories/santubong_page5.mp3",
-        image: "https://images.unsplash.com/photo-1470167290877-7d5d3446de4c?auto=format&fit=crop&w=1080&q=80"
+        image: "/pictures/stories/psps5.png"
       },
       {
         id: "p6",
         text: "Santubong then threw her weaving tool at Sejinjang.",
         audio: "/audio/stories/santubong_page6.mp3",
-        image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1080&q=80"
+        image: "/pictures/stories/psps5.png"
       },
       {
         id: "p7",
         text: "A curse took effect. Santubong turned into Mount Santubong.",
         audio: "/audio/stories/santubong_page7.mp3",
-        image: "https://images.unsplash.com/photo-1555050519-86cb798bb0d5?auto=format&fit=crop&w=1080&q=80"
+        image: "/pictures/stories/psps6.png"
       },
       {
         id: "p8",
         text: "Sejinjang turned into small islands.\n\Let us not be arrogant and quarrelsome!.",
         audio: "/audio/stories/santubong_page8.mp3",
-        image: "https://images.unsplash.com/photo-1506015391300-415214824367?auto=format&fit=crop&w=1080&q=80"
+        image: "/pictures/stories/psps7.png"
       }
     ]
   }
