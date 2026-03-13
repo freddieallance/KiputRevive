@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { MessageSquare, X, Send, Bot, Sparkles } from 'lucide-react';
 import { allKiputWords } from '../data/kiputData';
+import { useLanguage } from '../context/LanguageContext';
 
 interface Message {
   id: string;
@@ -10,10 +11,11 @@ interface Message {
 }
 
 export const TranslationBot = () => {
+  const { t, language } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [messages, setMessages] = useState<Message[]>([
-    { id: '1', text: "Hello! I am your KiputRevive AI guide. Ask me to translate a basic word!", sender: 'bot' }
+    { id: '1', text: t("Hello! I am your KiputRevive AI guide. Ask me to translate a basic word!", "Helo! Saya adalah panduan AI KiputRevive anda. Minta saya terjemahkan perkataan asas!"), sender: 'bot' }
   ]);
   const [input, setInput] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -60,16 +62,34 @@ export const TranslationBot = () => {
     // Try to find exact or partial match in English
     const englishMatch = words.find(w => cleanQuery.includes(w.english.toLowerCase()));
     if (englishMatch) {
+      if (language === 'bm') {
+        return `"${englishMatch.english}" dalam bahasa Kiput ialah "${englishMatch.kiput}". (Sebutan: ${englishMatch.pronunciation})`;
+      }
       return `"${englishMatch.english}" in Kiput is "${englishMatch.kiput}". (Pronounced: ${englishMatch.pronunciation})`;
+    }
+
+    // Try to find exact or partial match in BM
+    const bmMatch = words.find(w => w.bm && cleanQuery.includes(w.bm.toLowerCase()));
+    if (bmMatch) {
+      if (language === 'bm') {
+        return `"${bmMatch.bm}" dalam bahasa Kiput ialah "${bmMatch.kiput}". (Sebutan: ${bmMatch.pronunciation})`;
+      }
+      return `"${bmMatch.bm}" in Kiput is "${bmMatch.kiput}". (Pronounced: ${bmMatch.pronunciation})`;
     }
 
     // Try to find exact or partial match in Kiput
     const kiputMatch = words.find(w => cleanQuery.includes(w.kiput.toLowerCase()));
     if (kiputMatch) {
+      if (language === 'bm') {
+        return `"${kiputMatch.kiput}" bermaksud "${kiputMatch.bm || kiputMatch.english}" dalam Bahasa Malaysia.`;
+      }
       return `"${kiputMatch.kiput}" means "${kiputMatch.english}" in English.`;
     }
 
     // Fallback response
+    if (language === 'bm') {
+      return "Saya masih belajar! Saya hanya tahu perkataan asas dari senarai kosa kata anda buat masa ini. Cuba tanya untuk 'Anjing', 'Ibu', atau 'Sungai'.";
+    }
     return "I'm still learning! I only know basic words from your vocabulary list right now. Try asking for 'Dog', 'Mother', or 'River'.";
   };
 
@@ -101,7 +121,7 @@ export const TranslationBot = () => {
             <div className="bg-emerald-600 p-4 flex items-center justify-between text-white">
               <div className="flex items-center gap-2">
                 <Bot size={24} />
-                <h3 className="font-bold text-lg flex items-center gap-2">KiputRevive AI Translator <Sparkles size={16} className="text-emerald-300"/></h3>
+                <h3 className="font-bold text-lg flex items-center gap-2">{t("KiputRevive AI Translator", "Penterjemah AI KiputRevive")} <Sparkles size={16} className="text-emerald-300"/></h3>
               </div>
               <button onClick={() => setIsOpen(false)} className="hover:bg-emerald-700 p-1 rounded-full transition-colors">
                 <X size={20} />
@@ -134,7 +154,7 @@ export const TranslationBot = () => {
                   type="text"
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
-                  placeholder="Ask for a translation..."
+                  placeholder={t("Ask for a translation...", "Minta terjemahan...")}
                   className="flex-1 p-3 bg-stone-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 text-stone-700"
                 />
                 <button 

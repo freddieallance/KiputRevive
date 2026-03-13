@@ -1,8 +1,11 @@
 import { Link } from "react-router";
 import { motion } from "motion/react";
 import { ArrowLeft, Users, MapPin, Heart } from "lucide-react";
+import { useLanguage } from "../context/LanguageContext";
 
 export const MeetKiput = () => {
+  const { t } = useLanguage();
+
   return (
     <div className="min-h-screen bg-amber-50 pb-20">
       {/* Header */}
@@ -12,7 +15,7 @@ export const MeetKiput = () => {
             <ArrowLeft size={28} strokeWidth={3} />
           </Link>
           <h1 className="text-3xl md:text-5xl font-black text-white tracking-wide drop-shadow-md flex-1 text-center pr-12">
-            Meet the Kiput
+            {t("Meet the Kiput", "Kenali Kiput")}
           </h1>
         </div>
       </div>
@@ -34,11 +37,10 @@ export const MeetKiput = () => {
           </div>
           <div className="text-center">
             <h2 className="text-2xl md:text-3xl font-bold text-stone-800 mb-4 flex justify-center items-center gap-2">
-              <Users className="text-amber-500" /> The Kiput Community
+              <Users className="text-amber-500" /> {t("The Kiput Community", "Komuniti Kiput")}
             </h2>
             <p className="text-lg text-stone-600 font-medium max-w-2xl mx-auto">
-              The Kiput people are a unique indigenous community from the beautiful island of Borneo. 
-              Known for their strength, resilience, and rich cultural heritage.
+              {t("The Kiput people are a unique indigenous community from the beautiful island of Borneo. Known for their strength, resilience, and rich cultural heritage.", "Orang Kiput adalah komuniti peribumi yang unik dari pulau Borneo yang indah. Terkenal dengan kekuatan, ketahanan, dan warisan budaya mereka yang kaya.")}
             </p>
           </div>
         </motion.div>
@@ -54,7 +56,7 @@ export const MeetKiput = () => {
             <div className="bg-sky-200 p-4 rounded-full mb-4">
               <MapPin size={40} className="text-sky-600" />
             </div>
-            <h3 className="text-2xl font-black text-sky-800 mb-4">Where They Live</h3>
+            <h3 className="text-2xl font-black text-sky-800 mb-4">{t("Where They Live", "Tempat Tinggal Mereka")}</h3>
             <div className="relative w-full h-48 rounded-[1.5rem] overflow-hidden mb-4 border-2 border-sky-300">
               <img 
                 src="/pictures/baram.png"
@@ -63,7 +65,7 @@ export const MeetKiput = () => {
               />
             </div>
             <p className="text-sky-900 font-medium">
-              They live along the scenic banks of the <strong>Baram River</strong> in Northern Sarawak, Malaysia. The river is the heart of their daily life!
+              {t("They live along the scenic banks of the ", "Mereka tinggal di sepanjang tebing indah ")}<strong>{t("Baram River", "Sungai Baram")}</strong>{t(" in Northern Sarawak, Malaysia. The river is the heart of their daily life!", " di Utara Sarawak, Malaysia. Sungai ini adalah nadi kehidupan seharian mereka!")}
             </p>
           </motion.div>
 
@@ -77,12 +79,12 @@ export const MeetKiput = () => {
             <div className="bg-rose-200 p-4 rounded-full mb-4">
               <Heart size={40} className="text-rose-600" />
             </div>
-            <h3 className="text-2xl font-black text-rose-800 mb-4">Current Population</h3>
+            <h3 className="text-2xl font-black text-rose-800 mb-4">{t("Current Population", "Populasi Semasa")}</h3>
             <div className="text-6xl md:text-7xl font-black text-rose-500 mb-4 drop-shadow-sm">
               ~2,500
             </div>
             <p className="text-rose-900 font-medium text-lg">
-              Today, there are around 2,500 Kiput people. They are a small but incredibly proud community, working hard to keep their language and traditions alive.
+              {t("Today, there are around 2,500 Kiput people. They are a small but incredibly proud community, working hard to keep their language and traditions alive.", "Hari ini, terdapat kira-kira 2,500 orang Kiput. Mereka adalah komuniti yang kecil tetapi sangat bangga, bekerja keras untuk memastikan bahasa dan tradisi mereka terus hidup.")}
             </p>
           </motion.div>
         </div>

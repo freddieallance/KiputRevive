@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { ArrowLeft, Check, X, Volume2, Star, Heart, Trophy, RefreshCcw } from "lucide-react";
 import { kiputUnits, Unit, Word } from "../data/kiputData";
 import { toast } from "sonner";
+import { useLanguage } from "../context/LanguageContext";
 
 // --- Components ---
 
@@ -24,28 +25,31 @@ const HeartDisplay = ({ hearts }: { hearts: number }) => (
   </div>
 );
 
-const UnitCard = ({ unit, onClick, isLocked }: { unit: Unit, onClick: () => void, isLocked: boolean }) => (
-  <motion.div
-    whileHover={!isLocked ? { scale: 1.05 } : {}}
-    whileTap={!isLocked ? { scale: 0.95 } : {}}
-    onClick={!isLocked ? onClick : undefined}
-    className={`relative mb-8 p-6 rounded-3xl w-full max-w-sm mx-auto flex items-center justify-between shadow-[0_6px_0_0_rgba(0,0,0,0.1)] transition-colors border-2 ${
-      isLocked 
-        ? "bg-stone-200 border-stone-300 text-stone-400 cursor-not-allowed grayscale" 
-        : "bg-white border-stone-200 cursor-pointer hover:bg-stone-50"
-    }`}
-  >
-    <div className="flex flex-col">
-      <span className="text-xs font-bold uppercase tracking-wider mb-1 text-stone-400">Unit {unit.id}</span>
-      <h3 className="text-xl font-bold text-stone-800">{unit.title}</h3>
-      <p className="text-sm text-stone-500">{unit.description}</p>
-    </div>
-    
-    <div className={`w-16 h-16 rounded-full flex items-center justify-center text-white font-bold text-2xl shadow-inner ${unit.color}`}>
-       {isLocked ? <span className="opacity-50">🔒</span> : <Star className="fill-white" />}
-    </div>
-  </motion.div>
-);
+const UnitCard = ({ unit, onClick, isLocked }: { unit: Unit, onClick: () => void, isLocked: boolean }) => {
+  const { t } = useLanguage();
+  return (
+    <motion.div
+      whileHover={!isLocked ? { scale: 1.05 } : {}}
+      whileTap={!isLocked ? { scale: 0.95 } : {}}
+      onClick={!isLocked ? onClick : undefined}
+      className={`relative mb-8 p-6 rounded-3xl w-full max-w-sm mx-auto flex items-center justify-between shadow-[0_6px_0_0_rgba(0,0,0,0.1)] transition-colors border-2 ${
+        isLocked 
+          ? "bg-stone-200 border-stone-300 text-stone-400 cursor-not-allowed grayscale" 
+          : "bg-white border-stone-200 cursor-pointer hover:bg-stone-50"
+      }`}
+    >
+      <div className="flex flex-col">
+        <span className="text-xs font-bold uppercase tracking-wider mb-1 text-stone-400">{t("Unit", "Unit")} {unit.id}</span>
+        <h3 className="text-xl font-bold text-stone-800">{t(unit.title, unit.titleBm)}</h3>
+        <p className="text-sm text-stone-500">{t(unit.description, unit.descriptionBm)}</p>
+      </div>
+      
+      <div className={`w-16 h-16 rounded-full flex items-center justify-center text-white font-bold text-2xl shadow-inner ${unit.color}`}>
+         {isLocked ? <span className="opacity-50">🔒</span> : <Star className="fill-white" />}
+      </div>
+    </motion.div>
+  );
+};
 
 // --- Main Page ---
 
@@ -73,50 +77,52 @@ export const Learn = () => {
 };
 
 const SentenceGenerator = ({ onExit }: { onExit: () => void }) => {
+  const { t } = useLanguage();
+
   const subjects = [
-    { kiput: "Kau", english: "I", audio: "/audio/kau.mp3", emoji: "🧍" },
-    { kiput: "Nau", english: "You", audio: "/audio/nau.mp3", emoji: "🫵" },
-    { kiput: "Kaueng", english: "Friend", audio: "/audio/kaueng.mp3", emoji: "🤝" },
-    { kiput: "Tamah", english: "Father", audio: "/audio/tamah.mp3", emoji: "👨" },
-    { kiput: "Tinah", english: "Mother", audio: "/audio/tinah.mp3", emoji: "👩" },
-    { kiput: "Ark", english: "Brother", audio: "/audio/ark.mp3", emoji: "👦" },
-    { kiput: "Asau", english: "Dog", audio: "/audio/asau.mp3", emoji: "🐶" },
-    { kiput: "Usair", english: "Cat", audio: "/audio/usair.mp3", emoji: "🐱" },
-    { kiput: "Ucit", english: "Monkey", audio: "/audio/ucit.mp3", emoji: "🐒" }
+    { kiput: "Kau", english: "I", bm: "Saya", audio: "/audio/kau.mp3", emoji: "🧍" },
+    { kiput: "Nau", english: "You", bm: "Awak", audio: "/audio/nau.mp3", emoji: "🫵" },
+    { kiput: "Kaueng", english: "Friend", bm: "Kawan", audio: "/audio/kaueng.mp3", emoji: "🤝" },
+    { kiput: "Tamah", english: "Father", bm: "Bapa", audio: "/audio/tamah.mp3", emoji: "👨" },
+    { kiput: "Tinah", english: "Mother", bm: "Ibu", audio: "/audio/tinah.mp3", emoji: "👩" },
+    { kiput: "Ark", english: "Brother", bm: "Abang", audio: "/audio/ark.mp3", emoji: "👦" },
+    { kiput: "Asau", english: "Dog", bm: "Anjing", audio: "/audio/asau.mp3", emoji: "🐶" },
+    { kiput: "Usair", english: "Cat", bm: "Kucing", audio: "/audio/usair.mp3", emoji: "🐱" },
+    { kiput: "Ucit", english: "Monkey", bm: "Monyet", audio: "/audio/ucit.mp3", emoji: "🐒" }
   ];
 
   const verbs = [
-    { kiput: "kuman", english: "eats", audio: "/audio/kuman.mp3", emoji: "🍽️" },
-    { kiput: "misap", english: "drinks", audio: "/audio/misap.mp3", emoji: "💧" },
-    { kiput: "maceh", english: "reads", audio: "/audio/maceh.mp3", emoji: "📖" },
-    { kiput: "belajen", english: "learns", audio: "/audio/belajen.mp3", emoji: "🧠" },
-    { kiput: "umau", english: "goes to", audio: "/audio/umau.mp3", emoji: "🚶" },
-    { kiput: "mikat", english: "wakes up", audio: "/audio/mikat.mp3", emoji: "⏰" }
+    { kiput: "kuman", english: "eats", bm: "makan", audio: "/audio/kuman.mp3", emoji: "🍽️" },
+    { kiput: "misap", english: "drinks", bm: "minum", audio: "/audio/misap.mp3", emoji: "💧" },
+    { kiput: "maceh", english: "reads", bm: "baca", audio: "/audio/maceh.mp3", emoji: "📖" },
+    { kiput: "belajen", english: "learns", bm: "belajar", audio: "/audio/belajen.mp3", emoji: "🧠" },
+    { kiput: "umau", english: "goes to", bm: "pergi ke", audio: "/audio/umau.mp3", emoji: "🚶" },
+    { kiput: "mikat", english: "wakes up", bm: "bangun", audio: "/audio/mikat.mp3", emoji: "⏰" }
   ];
 
-  const objectsByVerb: Record<string, { kiput: string, english: string, audio: string, emoji: string }[]> = {
+  const objectsByVerb: Record<string, { kiput: string, english: string, bm: string, audio: string, emoji: string }[]> = {
     kuman: [
-      { kiput: "kanan", english: "rice", audio: "/audio/kanan.mp3", emoji: "🍚" },
-      { kiput: "putai", english: "banana", audio: "/audio/putai_banana.mp3", emoji: "🍌" },
-      { kiput: "sup", english: "soup", audio: "/audio/sup.mp3", emoji: "🥣" },
-      { kiput: "putak", english: "fish", audio: "/audio/putak.mp3", emoji: "🐟" },
-      { kiput: "an", english: "chicken", audio: "/audio/an_food.mp3", emoji: "🍗" }
+      { kiput: "kanan", english: "rice", bm: "nasi", audio: "/audio/kanan.mp3", emoji: "🍚" },
+      { kiput: "putai", english: "banana", bm: "pisang", audio: "/audio/putai_banana.mp3", emoji: "🍌" },
+      { kiput: "sup", english: "soup", bm: "sup", audio: "/audio/sup.mp3", emoji: "🥣" },
+      { kiput: "putak", english: "fish", bm: "ikan", audio: "/audio/putak.mp3", emoji: "🐟" },
+      { kiput: "an", english: "chicken", bm: "ayam", audio: "/audio/an_food.mp3", emoji: "🍗" }
     ],
     misap: [
-      { kiput: "sik", english: "water", audio: "/audio/sik.mp3", emoji: "🚰" }
+      { kiput: "sik", english: "water", bm: "air", audio: "/audio/sik.mp3", emoji: "🚰" }
     ],
     maceh: [
-      { kiput: "buk", english: "book", audio: "/audio/buk.mp3", emoji: "📚" }
+      { kiput: "buk", english: "book", bm: "buku", audio: "/audio/buk.mp3", emoji: "📚" }
     ],
     belajen: [
-      { kiput: "barau", english: "new things", audio: "/audio/barau.mp3", emoji: "✨" }
+      { kiput: "barau", english: "new things", bm: "perkara baru", audio: "/audio/barau.mp3", emoji: "✨" }
     ],
     umau: [
-      { kiput: "sekulah", english: "school", audio: "/audio/sekulah.mp3", emoji: "🏫" },
-      { kiput: "cau", english: "river", audio: "/audio/cau.mp3", emoji: "🌊" }
+      { kiput: "sekulah", english: "school", bm: "sekolah", audio: "/audio/sekulah.mp3", emoji: "🏫" },
+      { kiput: "cau", english: "river", bm: "sungai", audio: "/audio/cau.mp3", emoji: "🌊" }
     ],
     mikat: [
-      { kiput: "awin", english: "early", audio: "/audio/awin.mp3", emoji: "🌅" }
+      { kiput: "awin", english: "early", bm: "awal", audio: "/audio/awin.mp3", emoji: "🌅" }
     ]
   };
 
@@ -178,7 +184,7 @@ const SentenceGenerator = ({ onExit }: { onExit: () => void }) => {
           <X size={24} />
         </button>
         <h2 className="text-3xl md:text-4xl font-black text-purple-600 drop-shadow-sm flex items-center gap-3">
-          ✨ Magic Sentences ✨
+          ✨ {t("Magic Sentences", "Ayat Ajaib")} ✨
         </h2>
         <div className="w-12"></div> {/* Spacer for centering */}
       </div>
@@ -187,7 +193,7 @@ const SentenceGenerator = ({ onExit }: { onExit: () => void }) => {
         <button 
           onClick={generateRandom}
           className="absolute -top-6 -right-6 md:-right-8 bg-amber-400 hover:bg-amber-500 text-white p-4 rounded-full shadow-[0_4px_0_0_#d97706] active:shadow-none active:translate-y-[4px] transition-all transform hover:rotate-12"
-          title="Randomize!"
+          title={t("Randomize!", "Rawak!")}
         >
           <RefreshCcw size={32} />
         </button>
@@ -195,11 +201,11 @@ const SentenceGenerator = ({ onExit }: { onExit: () => void }) => {
         <div className="flex flex-col md:flex-row gap-6 md:gap-4 justify-between items-center mb-12">
           {/* Subject Card */}
           <div className="flex flex-col items-center">
-            <div className="text-sm font-bold text-stone-400 uppercase tracking-widest mb-3">Who</div>
+            <div className="text-sm font-bold text-stone-400 uppercase tracking-widest mb-3">{t("Who", "Siapa")}</div>
             <div className="bg-sky-100 border-4 border-sky-300 w-40 h-40 rounded-3xl flex flex-col items-center justify-center p-4 relative overflow-hidden">
                <span className="text-6xl mb-2">{subject.emoji}</span>
                <span className="text-xl font-bold text-sky-800">{subject.kiput}</span>
-               <span className="text-sm text-sky-600">{subject.english}</span>
+               <span className="text-sm text-sky-600">{t(subject.english, subject.bm)}</span>
             </div>
           </div>
 
@@ -207,11 +213,11 @@ const SentenceGenerator = ({ onExit }: { onExit: () => void }) => {
 
           {/* Verb Card */}
           <div className="flex flex-col items-center">
-            <div className="text-sm font-bold text-stone-400 uppercase tracking-widest mb-3">Action</div>
+            <div className="text-sm font-bold text-stone-400 uppercase tracking-widest mb-3">{t("Action", "Tindakan")}</div>
             <div className="bg-rose-100 border-4 border-rose-300 w-40 h-40 rounded-3xl flex flex-col items-center justify-center p-4 relative overflow-hidden">
                <span className="text-6xl mb-2">{verb.emoji}</span>
                <span className="text-xl font-bold text-rose-800">{verb.kiput}</span>
-               <span className="text-sm text-rose-600">{verb.english}</span>
+               <span className="text-sm text-rose-600">{t(verb.english, verb.bm)}</span>
             </div>
           </div>
 
@@ -219,11 +225,11 @@ const SentenceGenerator = ({ onExit }: { onExit: () => void }) => {
 
           {/* Object Card */}
           <div className="flex flex-col items-center">
-            <div className="text-sm font-bold text-stone-400 uppercase tracking-widest mb-3">What</div>
+            <div className="text-sm font-bold text-stone-400 uppercase tracking-widest mb-3">{t("What", "Apa")}</div>
             <div className="bg-emerald-100 border-4 border-emerald-300 w-40 h-40 rounded-3xl flex flex-col items-center justify-center p-4 relative overflow-hidden">
                <span className="text-6xl mb-2">{object.emoji}</span>
                <span className="text-xl font-bold text-emerald-800">{object.kiput}</span>
-               <span className="text-sm text-emerald-600">{object.english}</span>
+               <span className="text-sm text-emerald-600">{t(object.english, object.bm)}</span>
             </div>
           </div>
         </div>
@@ -233,7 +239,7 @@ const SentenceGenerator = ({ onExit }: { onExit: () => void }) => {
                 {subject.kiput} {verb.kiput} {object.kiput}.
             </div>
             <div className="text-lg md:text-xl text-stone-500 font-medium">
-                "{subject.english} {verb.english} {object.english}."
+                "{t(subject.english, subject.bm)} {t(verb.english, verb.bm)} {t(object.english, object.bm)}."
             </div>
         </div>
 
@@ -248,7 +254,7 @@ const SentenceGenerator = ({ onExit }: { onExit: () => void }) => {
           `}
         >
           <Volume2 size={32} className={isPlaying ? "animate-pulse" : ""} />
-          {isPlaying ? "Reading..." : "Read Aloud"}
+          {isPlaying ? t("Reading...", "Membaca...") : t("Read Aloud", "Baca Kuat")}
         </button>
       </div>
     </motion.div>
@@ -274,6 +280,8 @@ const getCategory = (title: string) => {
 // --- Sub-Screens ---
 
 const UnitPath = ({ onSelectUnit, onOpenGenerator }: { onSelectUnit: (u: Unit) => void, onOpenGenerator: () => void }) => {
+  const { t } = useLanguage();
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -288,6 +296,21 @@ const UnitPath = ({ onSelectUnit, onOpenGenerator }: { onSelectUnit: (u: Unit) =
     return acc;
   }, {} as Record<string, { category: ReturnType<typeof getCategory>, units: Unit[] }>);
 
+  const getCategoryNameBm = (name: string) => {
+    switch (name) {
+      case 'Family': return 'Keluarga';
+      case 'Animals': return 'Haiwan';
+      case 'Food & Drinks': return 'Makanan & Minuman';
+      case 'Nature': return 'Alam Semulajadi';
+      case 'Numbers': return 'Nombor';
+      case 'Colors': return 'Warna';
+      case 'Emotions': return 'Emosi';
+      case 'School': return 'Sekolah';
+      case 'Daily Life': return 'Kehidupan Harian';
+      default: return 'Lebih Banyak Perkataan Menarik';
+    }
+  };
+
   return (
     <motion.div 
       initial={{ opacity: 0, y: 20 }}
@@ -296,8 +319,8 @@ const UnitPath = ({ onSelectUnit, onOpenGenerator }: { onSelectUnit: (u: Unit) =
       className="max-w-2xl mx-auto pt-12 px-4"
     >
       <div className="text-center mb-12">
-        <h1 className="text-4xl font-black text-stone-800 mb-4 drop-shadow-sm">Your Learning Path</h1>
-        <p className="text-lg text-stone-500 font-medium">Master Kiput step-by-step.</p>
+        <h1 className="text-4xl font-black text-stone-800 mb-4 drop-shadow-sm">{t("Your Learning Path", "Laluan Pembelajaran Anda")}</h1>
+        <p className="text-lg text-stone-500 font-medium">{t("Master Kiput step-by-step.", "Kuasai Kiput langkah demi langkah.")}</p>
       </div>
 
       <motion.button
@@ -307,8 +330,8 @@ const UnitPath = ({ onSelectUnit, onOpenGenerator }: { onSelectUnit: (u: Unit) =
         className="w-full bg-gradient-to-r from-purple-500 to-pink-500 rounded-[2.5rem] p-8 text-white flex flex-col items-center justify-center mb-12 shadow-[0_8px_0_0_#9d174d] active:shadow-none active:translate-y-[8px] cursor-pointer transition-all border-4 border-white"
       >
         <span className="text-5xl mb-3 drop-shadow-md">✨🎰</span>
-        <h2 className="text-3xl font-black mb-2 tracking-wide">Magic Sentence Builder</h2>
-        <p className="text-purple-100 text-lg font-medium">Create and listen to fun sentences!</p>
+        <h2 className="text-3xl font-black mb-2 tracking-wide">{t("Magic Sentence Builder", "Pembina Ayat Ajaib")}</h2>
+        <p className="text-purple-100 text-lg font-medium">{t("Create and listen to fun sentences!", "Bina dan dengar ayat yang menyeronokkan!")}</p>
       </motion.button>
       
       <div className="space-y-12">
@@ -318,7 +341,7 @@ const UnitPath = ({ onSelectUnit, onOpenGenerator }: { onSelectUnit: (u: Unit) =
               <div className="bg-white w-14 h-14 rounded-full flex items-center justify-center shadow-sm text-3xl">
                 {category.emoji}
               </div>
-              <h2 className={`text-3xl font-black ${category.text}`}>{category.name}</h2>
+              <h2 className={`text-3xl font-black ${category.text}`}>{t(category.name, getCategoryNameBm(category.name))}</h2>
             </div>
             <div className="space-y-4">
               {units.map((unit) => (
@@ -335,8 +358,8 @@ const UnitPath = ({ onSelectUnit, onOpenGenerator }: { onSelectUnit: (u: Unit) =
         
         <div className="text-center mt-12 p-10 border-4 border-dashed border-stone-300 rounded-[2.5rem] text-stone-500 bg-white">
           <span className="text-5xl mb-4 block">🚀</span>
-          <p className="font-black text-2xl mb-2 text-stone-700">More Units Coming Soon</p>
-          <p className="text-lg">Help us add more content via the Parents & Teachers Zone!</p>
+          <p className="font-black text-2xl mb-2 text-stone-700">{t("More Units Coming Soon", "Lebih Banyak Unit Akan Datang")}</p>
+          <p className="text-lg">{t("Help us add more content via the Parents & Teachers Zone!", "Bantu kami tambah lebih banyak kandungan melalui Zon Ibu Bapa & Guru!")}</p>
         </div>
       </div>
     </motion.div>
@@ -344,6 +367,7 @@ const UnitPath = ({ onSelectUnit, onOpenGenerator }: { onSelectUnit: (u: Unit) =
 };
 
 const LessonSession = ({ unit, onExit }: { unit: Unit, onExit: () => void }) => {
+  const { t } = useLanguage();
   const [hearts, setHearts] = useState(5);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
@@ -355,13 +379,13 @@ const LessonSession = ({ unit, onExit }: { unit: Unit, onExit: () => void }) => 
   const questions = unit.words.map(word => ({
     type: "translate_to_english",
     question: word.kiput,
-    answer: word.english,
+    answer: t(word.english, word.bm),
     audio: word.audio,
     options: [
-      word.english, 
+      t(word.english, word.bm), 
       ...unit.words
         .filter(w => w.id !== word.id)
-        .map(w => w.english)
+        .map(w => t(w.english, w.bm))
         .sort(() => 0.5 - Math.random()) // Simple shuffle
         .slice(0, 3)
     ].sort(() => 0.5 - Math.random())
@@ -417,10 +441,10 @@ const LessonSession = ({ unit, onExit }: { unit: Unit, onExit: () => void }) => 
   useEffect(() => {
     if (hearts === 0) {
       // Handle game over logic here
-      toast.error("Out of hearts! Try again.");
+      toast.error(t("Out of hearts! Try again.", "Kehabisan nyawa! Cuba lagi."));
       onExit();
     }
-  }, [hearts, onExit]);
+  }, [hearts, onExit, t]);
 
   if (isCompleted) {
     return (
@@ -432,14 +456,14 @@ const LessonSession = ({ unit, onExit }: { unit: Unit, onExit: () => void }) => 
         >
           <Trophy size={120} />
         </motion.div>
-        <h2 className="text-4xl font-bold text-stone-800 mb-4">Lesson Complete!</h2>
-        <p className="text-xl text-stone-600 mb-8">You earned +10 XP</p>
+        <h2 className="text-4xl font-bold text-stone-800 mb-4">{t("Lesson Complete!", "Pelajaran Selesai!")}</h2>
+        <p className="text-xl text-stone-600 mb-8">{t("You earned +10 XP", "Anda mendapat +10 XP")}</p>
         <div className="flex gap-4">
           <button 
             onClick={onExit}
             className="px-8 py-3 bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded-xl shadow-[0_4px_0_0_#059669] active:shadow-none active:translate-y-[4px] transition-all"
           >
-            Continue
+            {t("Continue", "Teruskan")}
           </button>
         </div>
       </div>
@@ -459,7 +483,7 @@ const LessonSession = ({ unit, onExit }: { unit: Unit, onExit: () => void }) => 
 
       {/* Question Area */}
       <div className="flex-grow flex flex-col justify-center">
-        <h2 className="text-2xl font-bold text-stone-800 mb-8">Select the correct meaning</h2>
+        <h2 className="text-2xl font-bold text-stone-800 mb-8">{t("Select the correct meaning", "Pilih maksud yang betul")}</h2>
         
         <div className="mb-12 flex flex-col items-center">
             <div className="flex items-center gap-4 mb-4">
@@ -475,7 +499,7 @@ const LessonSession = ({ unit, onExit }: { unit: Unit, onExit: () => void }) => 
                     {currentQuestion.question}
                 </div>
             </div>
-            {currentQuestion.audio && <p className="text-stone-400 text-sm">Tap speaker to listen</p>}
+            {currentQuestion.audio && <p className="text-stone-400 text-sm">{t("Tap speaker to listen", "Tekan pembesar suara untuk mendengar")}</p>}
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
@@ -515,7 +539,7 @@ const LessonSession = ({ unit, onExit }: { unit: Unit, onExit: () => void }) => 
                 disabled={!selectedOption}
                 className="w-full md:w-auto px-12 py-3 bg-emerald-500 disabled:bg-stone-300 hover:bg-emerald-600 text-white font-bold rounded-xl shadow-[0_4px_0_0_#059669] active:shadow-none active:translate-y-[4px] transition-all uppercase tracking-wider"
               >
-                Check
+                {t("Check", "Semak")}
               </button>
             </div>
           ) : (
@@ -526,10 +550,10 @@ const LessonSession = ({ unit, onExit }: { unit: Unit, onExit: () => void }) => 
                 </div>
                 <div>
                   <h3 className={`text-xl font-bold ${status === "correct" ? "text-emerald-800" : "text-rose-800"}`}>
-                    {status === "correct" ? "Excellent!" : "Not quite right..."}
+                    {status === "correct" ? t("Excellent!", "Cemerlang!") : t("Not quite right...", "Kurang tepat...")}
                   </h3>
                   {status === "wrong" && (
-                    <p className="text-rose-600">Correct answer: <strong>{currentQuestion.answer}</strong></p>
+                    <p className="text-rose-600">{t("Correct answer:", "Jawapan yang betul:")} <strong>{currentQuestion.answer}</strong></p>
                   )}
                 </div>
               </div>
@@ -539,7 +563,7 @@ const LessonSession = ({ unit, onExit }: { unit: Unit, onExit: () => void }) => 
                   ${status === "correct" ? "bg-emerald-500 text-white hover:bg-emerald-600 shadow-[0_4px_0_0_#059669]" : "bg-rose-500 text-white hover:bg-rose-600 shadow-[0_4px_0_0_#be123c]"}
                 `}
               >
-                Continue
+                {t("Continue", "Teruskan")}
               </button>
             </>
           )}

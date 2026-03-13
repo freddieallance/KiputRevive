@@ -3,6 +3,7 @@ import { BookOpen, Feather, Languages, MessageSquarePlus, Home } from "lucide-re
 import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { useEffect } from "react";
+import { useLanguage } from "../context/LanguageContext";
 
 function cn(...inputs: (string | undefined | null | false)[]) {
   return twMerge(clsx(inputs));
@@ -20,13 +21,14 @@ const ScrollToTop = () => {
 
 const Navbar = () => {
   const location = useLocation();
+  const { t, language, setLanguage } = useLanguage();
 
   const links = [
-    { name: "Home", path: "/", icon: Home },
-    { name: "Learn", path: "/learn", icon: BookOpen },
-    { name: "Stories", path: "/stories", icon: Feather },
-    { name: "Dictionary", path: "/dictionary", icon: Languages },
-    { name: "Contribute", path: "/contribute", icon: MessageSquarePlus },
+    { name: t("Home", "Laman Utama"), path: "/", icon: Home },
+    { name: t("Learn", "Belajar"), path: "/learn", icon: BookOpen },
+    { name: t("Stories", "Cerita"), path: "/stories", icon: Feather },
+    { name: t("Dictionary", "Kamus"), path: "/dictionary", icon: Languages },
+    { name: t("Contribute", "Sumbangan"), path: "/contribute", icon: MessageSquarePlus },
   ];
 
   return (
@@ -47,7 +49,7 @@ const Navbar = () => {
                 const Icon = link.icon;
                 return (
                   <Link
-                    key={link.name}
+                    key={link.path}
                     to={link.path}
                     className={cn(
                       "px-4 py-2 rounded-md text-sm font-medium transition-colors flex items-center gap-2",
@@ -61,17 +63,33 @@ const Navbar = () => {
                   </Link>
                 );
               })}
+              <div className="pl-4 ml-2 border-l border-stone-700">
+                <button
+                  onClick={() => setLanguage(language === 'en' ? 'bm' : 'en')}
+                  className="px-3 py-1.5 rounded-md text-sm font-medium transition-colors flex items-center gap-2 text-stone-300 hover:bg-stone-800 hover:text-white"
+                >
+                  <Languages className="h-4 w-4" />
+                  {language === 'en' ? 'BM' : 'EN'}
+                </button>
+              </div>
             </div>
           </div>
         </div>
       </nav>
 
       {/* Mobile Top Header (Logo only) */}
-      <div className="md:hidden sticky top-0 z-50 bg-stone-900/95 backdrop-blur-sm border-b border-stone-800 text-stone-100 h-14 flex items-center justify-center">
+      <div className="md:hidden sticky top-0 z-50 bg-stone-900/95 backdrop-blur-sm border-b border-stone-800 text-stone-100 h-14 flex items-center justify-between px-4">
         <Link to="/" className="flex items-center gap-2 font-bold text-lg tracking-wide text-emerald-400">
           <Feather className="h-5 w-5" />
           <span>KIPUT<span className="text-stone-100">REVIVE</span></span>
         </Link>
+        <button
+          onClick={() => setLanguage(language === 'en' ? 'bm' : 'en')}
+          className="px-2 py-1 rounded-md text-xs font-medium transition-colors flex items-center gap-1 text-stone-300 hover:bg-stone-800 hover:text-white"
+        >
+          <Languages className="h-4 w-4" />
+          {language === 'en' ? 'BM' : 'EN'}
+        </button>
       </div>
 
       {/* Bottom Navigation (Mobile only) */}
@@ -82,7 +100,7 @@ const Navbar = () => {
             const Icon = link.icon;
             return (
               <Link
-                key={link.name}
+                key={link.path}
                 to={link.path}
                 className={cn(
                   "flex flex-col items-center justify-center w-full h-full space-y-1 transition-colors",
@@ -100,24 +118,27 @@ const Navbar = () => {
   );
 };
 
-const Footer = () => (
-  <footer className="bg-stone-950 text-stone-400 py-8 border-t border-stone-900">
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-4">
-      <div className="text-center md:text-left">
-        <h3 className="text-lg font-semibold text-stone-100 mb-1">Kiput Language Project</h3>
-        <p className="text-sm">Preserving heritage through technology.</p>
+const Footer = () => {
+  const { t } = useLanguage();
+  return (
+    <footer className="bg-stone-950 text-stone-400 py-8 border-t border-stone-900">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-4">
+        <div className="text-center md:text-left">
+          <h3 className="text-lg font-semibold text-stone-100 mb-1">{t("Kiput Language Project", "Projek Bahasa Kiput")}</h3>
+          <p className="text-sm">{t("Preserving heritage through technology.", "Memelihara warisan melalui teknologi.")}</p>
+        </div>
+        <div className="flex gap-6 text-sm">
+          <a href="#" className="hover:text-emerald-400 transition-colors">{t("About", "Tentang")}</a>
+          <a href="#" className="hover:text-emerald-400 transition-colors">{t("Privacy", "Privasi")}</a>
+          <a href="#" className="hover:text-emerald-400 transition-colors">{t("Contact", "Hubungi")}</a>
+        </div>
+        <div className="text-sm text-stone-600">
+          &copy; {new Date().getFullYear()} {t("Indigenous Tech Initiative", "Inisiatif Teknologi Peribumi")}
+        </div>
       </div>
-      <div className="flex gap-6 text-sm">
-        <a href="#" className="hover:text-emerald-400 transition-colors">About</a>
-        <a href="#" className="hover:text-emerald-400 transition-colors">Privacy</a>
-        <a href="#" className="hover:text-emerald-400 transition-colors">Contact</a>
-      </div>
-      <div className="text-sm text-stone-600">
-        &copy; {new Date().getFullYear()} Indigenous Tech Initiative
-      </div>
-    </div>
-  </footer>
-);
+    </footer>
+  );
+};
 
 export const Layout = () => {
   return (

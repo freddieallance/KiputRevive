@@ -3,8 +3,10 @@ import { Play, Pause, X, ChevronLeft, ChevronRight, BookOpen, Volume2, Sparkles,
 import { Link } from "react-router";
 import { motion, AnimatePresence } from "motion/react";
 import { kiputStories, Story } from "../data/kiputData";
+import { useLanguage } from "../context/LanguageContext";
 
 export const Stories = () => {
+  const { t } = useLanguage();
   const [selectedStory, setSelectedStory] = useState<Story | null>(null);
 
   return (
@@ -20,10 +22,10 @@ export const Stories = () => {
           >
             <div className="text-center mb-16">
               <h1 className="text-5xl md:text-6xl font-black text-stone-800 tracking-tight drop-shadow-sm flex items-center justify-center gap-4 mb-4">
-                Story Library <BookOpen className="text-amber-400" size={48} />
+                {t("Story Library", "Perpustakaan Cerita")} <BookOpen className="text-amber-400" size={48} />
               </h1>
               <p className="text-xl md:text-2xl text-stone-500 font-bold max-w-2xl mx-auto">
-                Pick a magic book to read and listen!
+                {t("Pick a magic book to read and listen!", "Pilih buku ajaib untuk dibaca dan didengar!")}
               </p>
             </div>
 
@@ -44,7 +46,7 @@ export const Stories = () => {
                     <div className="h-3/4 overflow-hidden relative">
                       <img
                         src={story.coverImage}
-                        alt={story.title}
+                        alt={t(story.title, story.titleBm)}
                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-stone-900/60 to-transparent" />
@@ -55,7 +57,7 @@ export const Stories = () => {
                       </div>
                     </div>
                     <div className="p-4 flex-1 bg-stone-100 flex items-center justify-center text-center">
-                      <h3 className="text-2xl font-black text-stone-800 leading-tight">{story.title}</h3>
+                      <h3 className="text-2xl font-black text-stone-800 leading-tight">{t(story.title, story.titleBm)}</h3>
                     </div>
                   </div>
                 </motion.div>
@@ -64,8 +66,8 @@ export const Stories = () => {
               {/* Call to action card */}
               <div className="bg-sky-100 rounded-3xl border-4 border-dashed border-sky-300 p-8 flex flex-col items-center justify-center text-center h-[400px]">
                 <Sparkles size={64} className="text-sky-400 mb-6" />
-                <h3 className="text-3xl font-black text-sky-900 mb-2">More Books</h3>
-                <p className="text-sky-700 font-bold mb-6 text-xl">Coming soon!</p>
+                <h3 className="text-3xl font-black text-sky-900 mb-2">{t("More Books", "Lebih Banyak Buku")}</h3>
+                <p className="text-sky-700 font-bold mb-6 text-xl">{t("Coming soon!", "Akan datang!")}</p>
               </div>
             </div>
           </motion.div>
@@ -80,6 +82,7 @@ export const Stories = () => {
 // --- Sub-component: Book Reader ---
 
 const BookReader = ({ story, onClose }: { story: Story, onClose: () => void }) => {
+  const { t } = useLanguage();
   const [currentPageIndex, setCurrentPageIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [playbackRate, setPlaybackRate] = useState(1);
@@ -94,12 +97,13 @@ const BookReader = ({ story, onClose }: { story: Story, onClose: () => void }) =
   }, []);
 
   const page = story.pages[currentPageIndex];
+  const pageText = t(page.text, page.textBm);
 
   // Split text into sentences for highlighting
   const sentences = useMemo(() => {
     // Basic sentence splitting by punctuation
-    return page.text.match(/[^.!?]+[.!?]+|\s*[^.!?]+$/g)?.map(s => s.trim()).filter(Boolean) || [page.text];
-  }, [page.text]);
+    return pageText.match(/[^.!?]+[.!?]+|\s*[^.!?]+$/g)?.map(s => s.trim()).filter(Boolean) || [pageText];
+  }, [pageText]);
 
   // Calculate which sentence is currently playing based on character proportion
   const currentSentenceIndex = useMemo(() => {
@@ -235,11 +239,11 @@ const BookReader = ({ story, onClose }: { story: Story, onClose: () => void }) =
           className="bg-white/20 hover:bg-white text-white hover:text-stone-900 p-3 sm:p-4 rounded-full backdrop-blur-md transition-all font-bold flex items-center gap-2"
         >
           <X size={24} />
-          <span className="hidden sm:inline">Close Book</span>
+          <span className="hidden sm:inline">{t("Close Book", "Tutup Buku")}</span>
         </button>
 
         <div className="bg-white/20 backdrop-blur-md text-white px-6 py-2 rounded-full font-bold text-lg tracking-widest uppercase">
-          Page {currentPageIndex + 1} of {story.pages.length}
+          {t("Page", "Muka Surat")} {currentPageIndex + 1} {t("of", "daripada")} {story.pages.length}
         </div>
       </div>
 
@@ -272,7 +276,7 @@ const BookReader = ({ story, onClose }: { story: Story, onClose: () => void }) =
             {/* Right Page: Text & Audio Controls */}
             <div className="h-1/2 sm:h-full sm:w-1/2 bg-[#fdfbf7] p-4 sm:p-12 sm:pl-10 flex flex-col relative">
               <div className="flex-1 flex items-center justify-center overflow-y-auto min-h-0">
-                <div className={`font-serif text-stone-800 leading-snug sm:leading-relaxed text-center whitespace-pre-wrap py-2 sm:py-4 ${page.text.length > 150 ? 'text-base sm:text-2xl lg:text-3xl' : 'text-lg sm:text-3xl lg:text-4xl'}`}>
+                <div className={`font-serif text-stone-800 leading-snug sm:leading-relaxed text-center whitespace-pre-wrap py-2 sm:py-4 ${pageText.length > 150 ? 'text-base sm:text-2xl lg:text-3xl' : 'text-lg sm:text-3xl lg:text-4xl'}`}>
                   {sentences.map((sentence, idx) => (
                     <span 
                       key={idx} 
@@ -303,7 +307,7 @@ const BookReader = ({ story, onClose }: { story: Story, onClose: () => void }) =
                       ${isPlaying ? 'bg-amber-400 text-amber-900 shadow-[0_4px_0_0_#b45309] sm:shadow-[0_6px_0_0_#b45309]' : 'bg-emerald-400 text-emerald-900 shadow-[0_4px_0_0_#047857] sm:shadow-[0_6px_0_0_#047857] hover:bg-emerald-300'}`}
                   >
                     {isPlaying ? <Pause fill="currentColor" size={20} className="sm:w-8 sm:h-8" /> : <Volume2 size={20} className="sm:w-8 sm:h-8" />}
-                    {isPlaying ? "Playing..." : "Read to me"}
+                    {isPlaying ? t("Playing...", "Sedang Dimainkan...") : t("Read to me", "Bacakan untuk saya")}
                   </button>
 
                   {/* Speed Control */}
@@ -311,7 +315,7 @@ const BookReader = ({ story, onClose }: { story: Story, onClose: () => void }) =
                     <button
                       onClick={() => setShowSpeedMenu(!showSpeedMenu)}
                       className="p-2 sm:p-4 rounded-full bg-stone-100 text-stone-600 hover:bg-stone-200 transition-colors shadow-sm"
-                      title="Playback Speed"
+                      title={t("Playback Speed", "Kelajuan Main Balik")}
                     >
                       <Settings2 size={20} className="sm:w-6 sm:h-6" />
                     </button>
@@ -325,7 +329,7 @@ const BookReader = ({ story, onClose }: { story: Story, onClose: () => void }) =
                           className="absolute bottom-full right-0 mb-2 bg-white rounded-xl shadow-xl border border-stone-100 overflow-hidden flex flex-col w-32 z-50"
                         >
                           <div className="px-3 py-2 bg-stone-50 border-b border-stone-100 text-xs font-bold text-stone-500 uppercase tracking-wider text-center">
-                            Speed
+                            {t("Speed", "Kelajuan")}
                           </div>
                           {speedOptions.map(speed => (
                             <button
