@@ -17,7 +17,7 @@
 ## 🔗 Submission Links
 * **Interactive Design Prototype :** https://kiput-revive.vercel.app/
 * **Video Demo (YouTube):** https://www.youtube.com/
-* **Project Report:** [KiputRevive_Project_Report.pdf](KiputRevive_Project_Report.pdf) *(Ensure your PDF is uploaded to this repo)*
+* **Project Report:** [KiputRevive_Project_Report.pdf](KiputRevive_Project_Report.pdf)
 
 ---
 
