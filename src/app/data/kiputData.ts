@@ -405,7 +405,7 @@ export const kiputStories: Story[] = [
         text: "Language Uniqueness: The Kiput language is very unique and different from other tribes in Sarawak. Although they are a small group, they are very proud of their heritage. They preserve their customs so they are not lost over time.",
         textBm: "Keunikan Bahasa: Bahasa Kiput sangat unik dan berbeza daripada suku kaum lain di Sarawak. Walaupun mereka adalah kumpulan kecil, mereka sangat bangga dengan warisan mereka. Mereka mengekalkan adat resam mereka supaya tidak hilang ditelan zaman.",
         audio: "/audio/stories/kiput_page3.mp3",
-        image: "/pictures/language.jpg"
+        image: "/pictures/language.png"
       },
       {
         id: "s0_p4",
