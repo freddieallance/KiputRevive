@@ -398,14 +398,14 @@ export const kiputStories: Story[] = [
         text: "Their Life: They are skilled at building longhouses. Their houses are very strong and tall to avoid floods and enemy attacks. The men hunt in the forest, while the women are skilled in making handicrafts.",
         textBm: "Kehidupan Mereka: Mereka mahir membina rumah panjang. Rumah mereka sangat kuat dan tinggi untuk mengelakkan banjir dan serangan musuh. Kaum lelaki memburu di hutan, manakala kaum wanita mahir membuat kraf tangan.",
         audio: "/audio/stories/kiput_page2.mp3",
-        image: "https://images.unsplash.com/photo-1559972501-fbf85ed4c375?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxsb25naG91c2UlMjBib3JuZW98ZW58MXx8fHwxNzczMjgyMDkwfDA&ixlib=rb-4.1.0&q=80&w=1080"
+        image: "/pictures/longhouse.jpg"
       },
       {
         id: "s0_p3",
         text: "Language Uniqueness: The Kiput language is very unique and different from other tribes in Sarawak. Although they are a small group, they are very proud of their heritage. They preserve their customs so they are not lost over time.",
         textBm: "Keunikan Bahasa: Bahasa Kiput sangat unik dan berbeza daripada suku kaum lain di Sarawak. Walaupun mereka adalah kumpulan kecil, mereka sangat bangga dengan warisan mereka. Mereka mengekalkan adat resam mereka supaya tidak hilang ditelan zaman.",
         audio: "/audio/stories/kiput_page3.mp3",
-        image: "https://images.unsplash.com/photo-1731946605621-1c552e3fe1b3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx0cmFkaXRpb25hbCUyMHdlYXZpbmclMjBoYW5kaWNyYWZ0c3xlbnwxfHx8fDE3NzMyODIwOTB8MA&ixlib=rb-4.1.0&q=80&w=1080"
+        image: "/pictures/language.jpg"
       },
       {
         id: "s0_p4",
