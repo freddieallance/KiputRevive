@@ -33,7 +33,7 @@ Our methodology focused on **Human-Centered Design**, ensuring that 100% of the 
 
 ## 🛠️ Design Tools Used
 * **Figma:** For UI/UX wireframing and high-fidelity interactive prototyping.
-* **Google Gemini:** For strategic research, methodology structure, and design brainstorming.
+* **ChatGPT:** For strategic research, methodology structure, and design brainstorming.
 * **Google Gemini:** For generating localized 2D storybook illustrations.
 
 ---
