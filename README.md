@@ -6,8 +6,10 @@
 ---
 
 ## 👥 Team Members
-* **Freddie Allance Anak Ujan** – IT Technician & Lead Designer
-* **[Native Speaker Name/Nickname]** – Linguistic Expert & Subject Matter Expert
+* **Freddie Allance Anak Ujan**
+* **Farrysha Qashryna Teh Binti Farrez Teh**
+* **Imalia Rosyida**
+* **Mohamad Hisham Bin Salehhudin**
 * **Team Name:** Borneo.java
 
 ---
@@ -32,7 +34,7 @@ Our methodology focused on **Human-Centered Design**, ensuring that 100% of the 
 ## 🛠️ Design Tools Used
 * **Figma:** For UI/UX wireframing and high-fidelity interactive prototyping.
 * **Google Gemini:** For strategic research, methodology structure, and design brainstorming.
-* **[Insert Image Tool]:** For generating localized 2D storybook illustrations.
+* **Google Gemini:** For generating localized 2D storybook illustrations.
 
 ---
 
