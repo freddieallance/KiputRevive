@@ -15,7 +15,7 @@
 ---
 
 ## 🔗 Submission Links
-* **Interactive Design Prototype (Figma):** [INSERT YOUR FIGMA LINK HERE]
+* **Interactive Design Prototype :** https://kiput-revive.vercel.app/
 * **Video Demo (YouTube):** [INSERT YOUR UNLISTED YOUTUBE LINK HERE]
 * **Project Report:** [KiputRevive_Project_Report.pdf](KiputRevive_Project_Report.pdf) *(Ensure your PDF is uploaded to this repo)*
 
@@ -40,20 +40,3 @@ Our methodology focused on **Human-Centered Design**, ensuring that 100% of the 
 
 ## 📜 AI Disclosure
 This project utilizes Generative AI for multimedia asset generation (illustrations) and design methodology brainstorming. **No AI was used to generate Kiput linguistic data.** All Kiput text and audio recordings were provided by a verified native speaker to ensure 100% cultural accuracy and preservation.
-
----
-
-© 2026 BorNEO HackWknd Submission
-  
-  
-  
-  # Indigenous Language Preservation App
-
-  This is a code bundle for Indigenous Language Preservation App. The original project is available at https://www.figma.com/design/vI6fqAWTPUyQ67NG1THdBG/Indigenous-Language-Preservation-App.
-
-  ## Running the code
-
-  Run `npm i` to install the dependencies.
-
-  Run `npm run dev` to start the development server.
-  
